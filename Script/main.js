@@ -4,6 +4,7 @@ let run = true;
 let fps = 1000 / 30;
 const mouse = new Point();
 let ctx;// canvas2d コンテキスト格納用
+let player_shots = [];
 
 // - main ---------------------------------------------------------------------
 window.onload = function () {
@@ -17,6 +18,7 @@ window.onload = function () {
     ctx = screen_canvas.getContext('2d');
 
     // イベントの登録
+    screen_canvas.addEventListener('mousedown', mouseDown, true);
     screen_canvas.addEventListener('mousemove', mouseMove, true);
     window.addEventListener('keydown', keyDown, true);
 
@@ -31,23 +33,19 @@ window.onload = function () {
         // HTMLを更新
         info.innerHTML = mouse.x + ' : ' + mouse.y;
 
+        player_char.calc();
+        player_shots.forEach(player_shot => {
+            player_shot.calc();
+        });
+
         // screenクリア
         ctx.clearRect(0, 0, screen_canvas.width, screen_canvas.height);
 
-        // パスの設定を開始
+        player_char.drow();
         ctx.beginPath();
-
-        // 自機の位置を設定
-        player_char.calc();
-
-        // 自機を描くパスを設定
-        ctx.arc(player_char.x, player_char.y, player_char.size, 0, Math.PI * 2, false);
-
-        // 自機の色を設定する
-        ctx.fillStyle = player_char.color;
-
-        // 自機を描く
-        ctx.fill();
+        player_shots.forEach(player_shot => {
+            player_shot.drow()
+        });
 
         // 毎回フラグを取り消しておく
         mouse.down = false;

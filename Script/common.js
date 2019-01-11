@@ -1,10 +1,9 @@
 
-class Point{
-    constructor() {
-        this.x = 0;
-        this.y = 0;
-    }
+class Point {
     constructor(x, y) {
+        if (x === undefined) { x = 0; }
+        if (y === undefined) { y = 0; }
+
         this.x = x;
         this.y = y;
     }
